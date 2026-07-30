@@ -40,7 +40,7 @@ public class Product : BaseEntity
     private void SetName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new InvalidOperationException("Product name is required.", nameof(name));
+            throw new ArgumentException("Product name is required.", nameof(name));
 
         name = name.Trim();
 

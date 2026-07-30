@@ -1,10 +1,13 @@
 ﻿using ECommerce.Domain.Entities;
+using ECommerce.Infrastructure.Data.DbContexts;
+using ECommerce.Infrastructure.Repositories;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerce.Domain.Repositories;
+namespace ECommerce.Domain.Repositories; 
+
 public class UnitOfWork(StoreDbContext dbContext) : IUnitOfWork
 {
     private readonly ConcurrentDictionary<Type, object> _repos = new();

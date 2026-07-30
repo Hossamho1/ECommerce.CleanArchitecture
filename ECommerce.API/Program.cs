@@ -15,7 +15,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddUseCases();
 
 var app = builder.Build();
-
+app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     await using var scope = app.Services.CreateAsyncScope();
