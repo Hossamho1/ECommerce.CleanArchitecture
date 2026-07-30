@@ -25,7 +25,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                .HasPrecision(18, 2);
 
         builder.HasOne(x => x.ProductBrand)
-               .WithMany(pb=>pb.Product)
+               .WithMany(pb=>pb.Products)
                .HasForeignKey(x => x.ProductBrandId)
                .OnDelete(DeleteBehavior.NoAction);
 
