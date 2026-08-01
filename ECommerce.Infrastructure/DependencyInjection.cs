@@ -1,6 +1,10 @@
-﻿using ECommerce.Domain.Entities;
+﻿using ECommerce.Application.Products;
+using ECommerce.Application.Products.Dtos;
+using ECommerce.Application.Products.Queries;
+using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure.Data.DbContexts;
 using ECommerce.Infrastructure.Data.Interceptors;
+using ECommerce.Infrastructure.persistence.Queries;
 using ECommerce.Infrastructure.persistence.Seeding;
 using ECommerce.Infrastructure.Persistence.Seeding;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IDataSeeder, ProductBrandSeeder>();
         services.AddScoped<IDataSeeder, ProductTypeSeeder>();
         services.AddScoped<DatabaseSeeder>();
+        services.AddScoped<IProductQueryService,ProductQueryService>();
 
         return services;
     }
