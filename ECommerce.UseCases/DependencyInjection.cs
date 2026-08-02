@@ -17,6 +17,7 @@ public static class DependencyInjection
         services.AddScoped<GetAllBrandsQuery>();
         services.AddScoped<GetByIdBrandQuery>();
 
+
         // Types
         services.AddScoped<GetAllTypesQuery>();
         services.AddScoped<GetByIdTypeQuery>();

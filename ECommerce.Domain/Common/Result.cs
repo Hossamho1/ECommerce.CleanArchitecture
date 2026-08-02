@@ -51,6 +51,17 @@ public sealed class Result<TValue> : Result
     public static new Result<TValue> Failure(Error error)
         => new Result<TValue>(default, false, error);
 
+    public TValue Value
+    {
+        get
+        {
+            if (!IsSuccess)
+                throw new InvalidOperationException("Cannot get the value of a failed Result.");
+
+            return _value!;
+        }
+    }
+
     public TResult Match<TResult>(
     Func<TValue, TResult> onSuccess,
     Func<Error, TResult> onFailure)
