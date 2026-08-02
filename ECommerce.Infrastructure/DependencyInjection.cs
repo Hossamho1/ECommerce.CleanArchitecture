@@ -31,7 +31,11 @@ public static class DependencyInjection
         services.AddScoped<IDataSeeder, ProductBrandSeeder>();
         services.AddScoped<IDataSeeder, ProductTypeSeeder>();
         services.AddScoped<DatabaseSeeder>();
-        services.AddScoped<IProductQueryService,ProductQueryService>();
+        services.AddScoped<IProductQueryService, ProductQueryService>();
+
+        // Brand and Type query service registrations
+        services.AddScoped< ECommerce.Application.Brands.IBrandQueryService, ECommerce.Infrastructure.persistence.Queries.ProductBrandQueryService>();
+        services.AddScoped< ECommerce.Application.Types.ITypeQueryService, ECommerce.Infrastructure.persistence.Queries.ProductTypeQueryService>();
 
         return services;
     }

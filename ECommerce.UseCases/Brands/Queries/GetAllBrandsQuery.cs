@@ -7,9 +7,9 @@ using System.Text;
 namespace ECommerce.Application.Brands.Queries;
 public sealed class GetAllBrandsQuery(IBrandQueryService _queryService)
 {
-    public async Task<Result<IReadOnlyList<GetAllBrandResponse>>> ExecuteAsync()
+    public async Task<Result<IReadOnlyList<GetAllBrandResponse>>> ExecuteAsync(CancellationToken cancellationToken)
     {
-        var brands = await _queryService.GetAllBrandsAsync();
+        var brands = await _queryService.GetAllBrandsAsync(cancellationToken);
 
         return Result<IReadOnlyList<GetAllBrandResponse>>.Success(brands);
     }

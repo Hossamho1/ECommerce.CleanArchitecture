@@ -9,6 +9,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddProblemDetails();
         services.AddExceptionHandler<GlobalExceptionMiddleware>();
+        services.AddSwaggerGen();
         return services;
     }
 }

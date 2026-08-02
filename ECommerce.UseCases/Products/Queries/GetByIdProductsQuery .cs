@@ -3,23 +3,23 @@ using ECommerce.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ECommerce.Application.Products.Queries
 {
     public sealed class GetByIdProductsQuery(IProductQueryService _queryService)
     {
-        public async Task<Result<IReadOnlyList<GetByIdProductResponse>>> ExecuteAsync(Guid id)
+        public async Task<Result<GetByIdProductResponse>> ExecuteAsync(Guid id, CancellationToken ct)
         {
-            var product = await _queryService.GetByIdProductResponseAsync(id);
+            var product = await _queryService.GetByIdProductResponseAsync(id, ct);
 
-            if(product == null)
+            if (product == null)
             {
-                return Result<IReadOnlyList<GetByIdProductResponse>>
+                return Result<GetByIdProductResponse>
                     .Failure(ProductErrors.NotFound);
-            }   
+            }
 
-            return Result<IReadOnlyList<GetByIdProductResponse>>
-                .Success(new List<GetByIdProductResponse> { product });
+            return Result<GetByIdProductResponse>.Success(product);
         }
     }
 }
