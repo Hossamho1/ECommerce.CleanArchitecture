@@ -10,6 +10,7 @@ using ECommerce.Infrastructure.Persistence.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ECommerce.Infrastructure.Repositories;
 
 namespace ECommerce.Infrastructure;
 
@@ -32,6 +33,9 @@ public static class DependencyInjection
         services.AddScoped<IDataSeeder, ProductTypeSeeder>();
         services.AddScoped<DatabaseSeeder>();
         services.AddScoped<IProductQueryService, ProductQueryService>();
+
+        // Unit of Work and generic repository
+        services.AddScoped<ECommerce.Domain.Repositories.IUnitOfWork, ECommerce.Domain.Repositories.UnitOfWork>();
 
         // Brand and Type query service registrations
         services.AddScoped< ECommerce.Application.Brands.IBrandQueryService, ECommerce.Infrastructure.persistence.Queries.ProductBrandQueryService>();
