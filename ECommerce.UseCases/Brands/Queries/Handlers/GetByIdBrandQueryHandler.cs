@@ -5,9 +5,9 @@ using ECommerce.Domain.Repositories;
 using Mapster;
 using MediatR;
 
-namespace ECommerce.Application.Brands.Queries;
+namespace ECommerce.Application.Brands.Queries.Handlers;
 
-public class GetByIdBrandQueryHandler : IRequestHandler<GetBrandByIdQuery, Result<GetByIdBrandResponse>>
+public class GetByIdBrandQueryHandler : IRequestHandler<GetByIdBrandQuery, Result<GetByIdBrandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -16,7 +16,7 @@ public class GetByIdBrandQueryHandler : IRequestHandler<GetBrandByIdQuery, Resul
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<GetByIdBrandResponse>> Handle(GetBrandByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetByIdBrandResponse>> Handle(GetByIdBrandQuery request, CancellationToken cancellationToken)
     {
         var brand = await _unitOfWork.Repository<ProductBrand>().GetByIdAsync(request.Id, cancellationToken);
 

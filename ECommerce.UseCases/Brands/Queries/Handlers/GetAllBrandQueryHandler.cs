@@ -5,7 +5,7 @@ using ECommerce.Domain.Repositories;
 using Mapster;
 using MediatR;
 
-namespace ECommerce.Application.Brands.Queries;
+namespace ECommerce.Application.Brands.Queries.Handlers;
 
 public class GetAllBrandQueryHandler : IRequestHandler<GetAllBrandQuery, Result<IReadOnlyList<GetAllBrandResponse>>>
 {

@@ -21,7 +21,7 @@ public class BrandsController(IMediator mediator) : ApiControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<ApiResponse<GetByIdBrandResponse>>> Get(Guid id, CancellationToken ct = default)
     {
-        var result = await mediator.Send(new ECommerce.Application.Brands.Queries.GetBrandByIdQuery(id), ct);
+        var result = await mediator.Send(new ECommerce.Application.Brands.Queries.GetByIdBrandQuery(id), ct);
 
         return FromResult(result);
     }
