@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Brands.Dtos;
+using ECommerce.Application.Brands.Enums;
 using ECommerce.Application.Brands.Queries;
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.API.Models;
@@ -16,6 +17,27 @@ public class BrandsController(IMediator mediator) : ApiControllerBase
         var result = await mediator.Send(new ECommerce.Application.Brands.Queries.GetAllBrandQuery(), cancellationToken);
 
         return FromResult(result);
+    }
+
+    [HttpGet("paged")]
+    public async Task<ActionResult<ApiResponse<IReadOnlyList<GetAllBrandResponse>>>> GetPaged(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? search = null,
+        [FromQuery] BrandSortField sortBy = BrandSortField.Name,
+        [FromQuery] bool sortDescending = false,
+        CancellationToken ct = default)
+    {
+        var result = await mediator.Send(new GetPagedBrandsQuery(pageNumber, pageSize, search, sortBy, sortDescending), ct);
+
+        if (result.IsFailure)
+            return Problem(result);
+
+        var paged = result.Value;
+
+        var pagination = new PaginationMeta(pageNumber, pageSize, paged.TotalCount);
+
+        return Success(paged.Items, null, pagination);
     }
 
     [HttpGet("{id:guid}")]
