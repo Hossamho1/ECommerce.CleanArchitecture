@@ -5,7 +5,7 @@ using ECommerce.Domain.Repositories;
 using Mapster;
 using MediatR;
 
-namespace ECommerce.Application.Products.Queries;
+namespace ECommerce.Application.Products.Queries.Handler;
 
 public class GetAllProductQueryHandler : IRequestHandler<GetAllProductQuery, Result<IReadOnlyList<GetAllProductResponse>>>
 {
