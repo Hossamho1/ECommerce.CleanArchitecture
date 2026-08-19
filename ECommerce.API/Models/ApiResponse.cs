@@ -52,3 +52,4 @@ public class PaginationMeta
         HasNextPage = pageNumber < TotalPages;
     }
 }
+

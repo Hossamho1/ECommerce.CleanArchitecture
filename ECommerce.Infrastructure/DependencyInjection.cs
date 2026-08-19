@@ -10,11 +10,13 @@ using ECommerce.Infrastructure.persistence.Seeding;
 using ECommerce.Infrastructure.Persistence.Seeding;
 using ECommerce.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 namespace ECommerce.Infrastructure;
+
 
 public static class DependencyInjection
 {
@@ -91,7 +93,7 @@ public static class DependencyInjection
 
         services.AddScoped(
             typeof(ICachedAggregateStore<>),
-            typeof(HybridCacheAggregateStore<>));
+            typeof(CachedAggregateStore<>));
 
         services.AddScoped<
             IBasketStore,
