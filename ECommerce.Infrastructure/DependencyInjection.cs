@@ -1,17 +1,19 @@
-﻿using ECommerce.Application.Products;
-using ECommerce.Application.Products.Dtos;
-using ECommerce.Application.Products.Queries;
-using ECommerce.Domain.Entities;
+﻿using ECommerce.Application.Brands;
+using ECommerce.Application.Products;
+using ECommerce.Application.Types;
+using ECommerce.Domain.Repositories;
+using ECommerce.Infrastructure.Caching;
 using ECommerce.Infrastructure.Data.DbContexts;
 using ECommerce.Infrastructure.Data.Interceptors;
 using ECommerce.Infrastructure.persistence.Queries;
 using ECommerce.Infrastructure.persistence.Seeding;
 using ECommerce.Infrastructure.Persistence.Seeding;
+using ECommerce.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ECommerce.Infrastructure.Repositories;
-
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 namespace ECommerce.Infrastructure;
 
 public static class DependencyInjection
@@ -20,27 +22,79 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration config)
     {
-
-        services.AddSingleton<AuditColumnsInterceptor>();
         services.AddDbContext<StoreDbContext>(options =>
         {
             options.UseSqlServer(
                 config.GetConnectionString("DefaultConnection"))
-            .EnableSensitiveDataLogging();
+                .EnableSensitiveDataLogging();
         });
+
+
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped(
+            typeof(IReadRepository<>),
+            typeof(Repository<>));
+
+        services.AddScoped(
+            typeof(IRepository<>),
+            typeof(Repository<>));
 
         services.AddScoped<IDataSeeder, ProductBrandSeeder>();
         services.AddScoped<IDataSeeder, ProductTypeSeeder>();
+
         services.AddScoped<DatabaseSeeder>();
+
         services.AddScoped<IProductQueryService, ProductQueryService>();
 
-        // Unit of Work and generic repository
-        services.AddScoped<ECommerce.Domain.Repositories.IUnitOfWork, ECommerce.Domain.Repositories.UnitOfWork>();
-
-        // Brand and Type query service registrations
-        services.AddScoped< ECommerce.Application.Brands.IBrandQueryService, ECommerce.Infrastructure.persistence.Queries.ProductBrandQueryService>();
-        services.AddScoped< ECommerce.Application.Types.ITypeQueryService, ECommerce.Infrastructure.persistence.Queries.ProductTypeQueryService>();
+        // Basket caching
+        AddBasketCaching(services, config);
 
         return services;
+    }
+
+
+    // =========================
+    // Basket Caching
+    // =========================
+
+    private static void AddBasketCaching(
+        IServiceCollection services,
+        IConfiguration config)
+    {
+        services
+            .AddOptions<CacheEntryPolicy>("Basket")
+            .Bind(config.GetSection("CachedAggregates:Basket"))
+            .ValidateOnStart();
+
+        services.AddSingleton<
+            IValidateOptions<CacheEntryPolicy>,
+            CacheEntryPolicyValidator>();
+
+        var redisConnection =
+            config.GetConnectionString("Redis");
+
+        if (!string.IsNullOrWhiteSpace(redisConnection))
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = redisConnection;
+            });
+        }
+        else
+        {
+            services.AddDistributedMemoryCache();
+        }
+
+        services.AddHybridCache();
+
+        services.AddScoped(
+            typeof(ICachedAggregateStore<>),
+            typeof(HybridCacheAggregateStore<>));
+
+        services.AddScoped<
+            IBasketStore,
+            HybridBasketStore>();
     }
 }
