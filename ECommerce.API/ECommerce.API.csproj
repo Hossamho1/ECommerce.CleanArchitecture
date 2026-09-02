@@ -9,7 +9,10 @@
   <ItemGroup>
     <PackageReference Include="Mapster" Version="10.0.12" />
     <PackageReference Include="Mapster.DependencyInjection" Version="10.0.12" />
+<<<<<<< HEAD
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.11" />
+=======
+>>>>>>> 4f8d06f6baf74d5196ad533a476b1936b0454a60
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -18,6 +21,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
     <PackageReference Include="MediatR" Version="14.2.0" />
+<<<<<<< HEAD
+=======
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+>>>>>>> 4f8d06f6baf74d5196ad533a476b1936b0454a60
   </ItemGroup>
 
   <ItemGroup>

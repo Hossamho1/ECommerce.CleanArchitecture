@@ -14,10 +14,17 @@ using ECommerce.UseCases.Common.Interfaces;
 using ECommerce.Infrastructure.Services;
 using ECommerce.Application.Commons.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 namespace ECommerce.Infrastructure;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 4f8d06f6baf74d5196ad533a476b1936b0454a60
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(

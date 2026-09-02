@@ -9,6 +9,7 @@ public static class ApiMessages
     public const string BasketItemRemoved = "Basket item removed successfully.";
     public const string BasketCleared = "Basket cleared successfully.";
     public const string BasketMerged = "Basket merged successfully.";
+<<<<<<< HEAD
     public const string CurrentUserRetrieved = "Current user retrieved successfully.";
     public const string UserProfileUpdated = "User profile updated successfully.";
     public const string UserAddressesRetrieved = "User addresses retrieved successfully.";
@@ -17,4 +18,6 @@ public static class ApiMessages
     public const string LoggedIn = "User logged in successfully.";
     public const string TokenRefreshed = "Token refreshed successfully.";
     public const string LoggedOut = "User logged out successfully.";
+=======
+>>>>>>> 4f8d06f6baf74d5196ad533a476b1936b0454a60
 }
