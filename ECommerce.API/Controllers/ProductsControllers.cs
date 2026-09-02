@@ -10,6 +10,7 @@ using System.Threading;
 
 namespace ECommerce.API.Controllers;
 
+
 public class ProductsController(IMediator mediator) : ApiControllerBase
 {
     [HttpGet]

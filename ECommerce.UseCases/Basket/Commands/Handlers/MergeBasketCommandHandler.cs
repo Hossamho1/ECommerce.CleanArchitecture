@@ -25,9 +25,15 @@ public class MergeBasketCommandHandler : IRequestHandler<MergeBasketCommand, Res
         var anonymousBasket = await _basketStore.GetOrCreateAsync(anonymousBuyerGuid, cancellationToken);
         var userBasket = await _basketStore.GetOrCreateAsync(request.BuyerId, cancellationToken);
 
+<<<<<<< HEAD
+        userBasket.MergeFrom(anonymousBasket);
+
+        await _basketStore.SaveAsync(userBasket, cancellationToken); 
+=======
         userBasket.Merge(anonymousBasket);
 
         await _basketStore.SaveAsync(userBasket, cancellationToken); // التعديل هنا
+>>>>>>> 4f8d06f6baf74d5196ad533a476b1936b0454a60
         await _basketStore.DeleteAsync(anonymousBuyerGuid, cancellationToken);
 
         var dto = userBasket.Adapt<GetBasketResponse>();

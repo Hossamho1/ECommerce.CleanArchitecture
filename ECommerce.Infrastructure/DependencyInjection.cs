@@ -4,11 +4,15 @@ using ECommerce.Application.Types;
 using ECommerce.Domain.Repositories;
 using ECommerce.Infrastructure.Caching;
 using ECommerce.Infrastructure.Data.DbContexts;
-using ECommerce.Infrastructure.Data.Interceptors;
+using ECommerce.Infrastructure.Identity;
 using ECommerce.Infrastructure.persistence.Queries;
 using ECommerce.Infrastructure.persistence.Seeding;
 using ECommerce.Infrastructure.Persistence.Seeding;
 using ECommerce.Infrastructure.Repositories;
+using ECommerce.UseCases.Common.Settings;
+using ECommerce.UseCases.Common.Interfaces;
+using ECommerce.Infrastructure.Services;
+using ECommerce.Application.Commons.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
@@ -16,20 +20,37 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 namespace ECommerce.Infrastructure;
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> 4f8d06f6baf74d5196ad533a476b1936b0454a60
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration config)
     {
+        var connectionString = config.GetConnectionString("DefaultConnection")
+          ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is missing.");
+
         services.AddDbContext<StoreDbContext>(options =>
         {
-            options.UseSqlServer(
-                config.GetConnectionString("DefaultConnection"))
+            options.UseSqlServer(connectionString, sql =>
+                    sql.MigrationsHistoryTable("__ApplicationMigrationsHistory", "app"))
                 .EnableSensitiveDataLogging();
         });
+
+        services.AddDbContext<IdentityStoreDbContext>(options =>
+        {
+            options.UseSqlServer(connectionString, sql =>
+                    sql.MigrationsHistoryTable("__IdentityMigrationsHistory", "identity"))
+                .EnableSensitiveDataLogging();
+        });
+
+        // Register identity application service
+        services.AddScoped<IIdentityService, IdentityService>();
+
 
 
 
@@ -45,21 +66,20 @@ public static class DependencyInjection
 
         services.AddScoped<IDataSeeder, ProductBrandSeeder>();
         services.AddScoped<IDataSeeder, ProductTypeSeeder>();
-
+        services.AddScoped<IDataSeeder, IdentitySeeder>();
+        services.Configure<JwtSettings>(config.GetSection("Jwt"));
         services.AddScoped<DatabaseSeeder>();
 
         services.AddScoped<IProductQueryService, ProductQueryService>();
-
-        // Basket caching
+        services.AddScoped<ITypeQueryService, ProductTypeQueryService>();        
+        services.AddScoped<IUserAddressService, UserAddressService>();
+        // JWT generator
+        services.AddScoped<IJwtTokenGenerator, Identity.JwtTokenGenerator>();
         AddBasketCaching(services, config);
 
         return services;
     }
 
-
-    // =========================
-    // Basket Caching
-    // =========================
 
     private static void AddBasketCaching(
         IServiceCollection services,

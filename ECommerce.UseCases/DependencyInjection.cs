@@ -1,10 +1,11 @@
-﻿using ECommerce.Application.Products.Queries;
-using ECommerce.Application.Types.Queries;
-using Microsoft.Extensions.DependencyInjection;
-using MediatR;
+﻿using ECommerce.Application.Behaviors;
 using ECommerce.Application.Brands.Queries;
+using ECommerce.Application.Products.Queries;
+using ECommerce.Application.Types;
+using ECommerce.Application.Types.Queries;
 using FluentValidation;
-using ECommerce.Application.Behaviors;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.UseCases;
 
@@ -13,8 +14,9 @@ public static class DependencyInjection
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
         // Register MediatR handlers from this assembly (use Brand query as anchor)
-        services.AddMediatR(typeof(GetAllBrandQuery).Assembly);
-
+        services.AddMediatR(cfg => {
+            cfg.RegisterServicesFromAssembly(typeof(GetAllBrandQuery).Assembly);
+        });
         // Register FluentValidation validators from this assembly
         services.AddValidatorsFromAssembly(typeof(GetAllBrandQuery).Assembly);
 

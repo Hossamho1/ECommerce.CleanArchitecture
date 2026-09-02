@@ -16,7 +16,7 @@ public class ApiControllerBase: ControllerBase
     }
     protected ActionResult Problem(Result result)
     {
-        var statusCode = result.Error.Type switch
+        var statusCode = result.Error?.Type switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
@@ -26,7 +26,7 @@ public class ApiControllerBase: ControllerBase
             _ => StatusCodes.Status500InternalServerError
         };
 
-        var title = result.Error.Type switch
+        var title = result.Error?.Type switch
         {
             ErrorType.Validation => "Validation Error",
             ErrorType.NotFound => "Resource Not Found",
